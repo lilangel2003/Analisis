@@ -1,0 +1,31 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+    <div class="fade-in">
+        <h1 class="mb-4">Método de Bisección</h1>
+
+        <h2>Explicación Teórica</h2>
+        <p>{{ explicacion_teorica|safe }}</p>
+
+        <h2 class="mt-5">Fórmulas del Método de Bisección</h2>
+        <div class="row">
+            {% for formula in formulas %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ formula.titulo }}</h3>
+                        <p class="card-text"><strong>Fórmula:</strong></p>
+                        <pre class="card-text">{{ formula.formula }}</pre>
+                        <p class="card-text">{{ formula.explicacion }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Calcular Método de Bisección</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'biblioteca' %}" class="btn btn-info mt-4">Biblioteca de Libros</a>
+        {% endif %}
+    </div>
+{% endblock %}

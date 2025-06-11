@@ -1,0 +1,35 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-sm" style="width: 100%; max-width: 400px;">
+        <div class="card-body p-4">
+            <h2 class="text-center mb-4">Crear cuenta</h2>
+            {% if msg %}
+                <div class="alert alert-info mb-4" role="alert">
+                    {{ msg }}
+                </div>
+            {% endif %}
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.non_field_errors }}
+                </div>
+                {% for field in form %}
+                    <div class="mb-3">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary w-100 mt-3">Registrarse</button>
+            </form>
+            <p class="text-center mt-4 mb-0">
+                ¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-secondary">Inicia sesión</a>.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

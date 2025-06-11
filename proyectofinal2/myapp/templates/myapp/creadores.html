@@ -1,0 +1,43 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Desarrollador</h1>
+        <div class="row justify-content-center">
+            <!-- Tarjeta 1 -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+                    <img src="ingresar imagen" class="card-img-top img-fluid" style="height: 300px; object-fit: cover;" alt="Angel Ramirez">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Angel Osmin Ramirez Berrios</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">RB21025@ues.edu.sv</h6>
+                        <p class="card-text"><strong>Rol:</strong> Back-end</p>
+                        <p class="card-text">
+                            <strong>Desarrollo:</strong> Python, Django, MySQL
+                        </p>
+                        <p class="card-text">
+                            <strong>Realización:</strong> Modelos, Vistas, URLs, Plantillas, Base de datos
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta 2 -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+                    <img src="ingresar imagen" class="card-img-top img-fluid" style="height: 300px; object-fit: cover;" alt="Cristian Rubio">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Cristian Geovanny Rubio Garcia</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">RG22016@ues.edu.sv</h6>
+                        <p class="card-text"><strong>Rol:</strong> Front-end</p>
+                        <p class="card-text">
+                            <strong>Desarrollo:</strong> HTML, CSS, JavaScript
+                        </p>
+                        <p class="card-text">
+                            <strong>Realización:</strong> Interfaces, estilos, validaciones, y otras cositas mas 
+                        </p>
+                    </div>
+                </div>
+            </div>
+{% endblock %}
+

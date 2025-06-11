@@ -1,0 +1,115 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}Calculadora{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4 text-center">Calculadora</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <!-- Campo de entrada para la expresión -->
+            <input type="text" id="expression" name="expression" class="form-control" placeholder="Introduce una expresión" value="{{ request.POST.expression|default_if_none:'' }}" readonly>
+        </div>
+        <div class="calculator-keyboard">
+            <div class="container">
+                <!-- Teclado de la calculadora -->
+                <div class="row g-2 mb-2">
+                    <!-- Operaciones algebraicas y trigonométricas -->
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('+')">+</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('-')">-</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('*')">*</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-warning w-100" onclick="appendKey('/')">/</button>
+                    </div>
+                </div>
+                <div class="row g-2 mb-2">
+                    <!-- Funciones trigonométricas -->
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('.')">.</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('(')">(</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey(')')">)</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('sin(')">sin</button>
+                    </div>
+                </div>
+                <div class="row g-2 mb-2">
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('cos(')">cos</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('tan(')">tan</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('asin(')">asin</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('acos(')">acos</button>
+                    </div>
+                </div>
+                <div class="row g-2 mb-2">
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('atan(')">atan</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('pow2(')">x²</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('ln(')">ln</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('log(')">log</button>
+                    </div>
+                </div>
+                <div class="row g-2 mb-2">
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('matrix(')">matrix</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-light w-100" onclick="appendKey('solve(')">solve</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-danger w-100" onclick="clearExpression()">C</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-primary w-100">Calcular</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {% if resultado is not None %}
+    <div class="alert alert-info mt-3" role="alert">
+        Resultado: {{ resultado }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function appendKey(key) {
+        const expressionField = document.getElementById('expression');
+        // Append the key value to the expression field
+        expressionField.value += key;
+    }
+
+    function clearExpression() {
+        const expressionField = document.getElementById('expression');
+        // Clear the expression field
+        expressionField.value = '';
+    }
+</script>
+{% endblock %}

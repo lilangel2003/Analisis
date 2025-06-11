@@ -1,0 +1,33 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Biblioteca{% endblock %}
+
+{% block content %}
+<div class="container mt-5 fade-in">
+    <div class="text-center mb-4">
+        <h2 class="mb-4">Libros de Análisis Numérico</h2>
+    </div>
+
+    <div class="row" id="book-gallery">
+        {% for book in libros %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ book.image_url }}" class="card-img-top img-fluid" style="height: 300px; object-fit: cover;" alt="{{ book.title }}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text"><strong>Autor:</strong> {{ book.author }}</p>
+                    <p class="card-text">{{ book.description }}</p>
+                    <a href="https://drive.google.com/drive/folders/1gyd0n7gtXbvI4sBlIa4jBC316P5mBLtS?usp=drive_link" class="btn btn-primary mt-auto">Ver Más</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% if user.is_authenticated %}
+    <div class="text-center mt-4">
+        <a href="{% url 'videos' %}" class="btn btn-info">Videos sobre los temas</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

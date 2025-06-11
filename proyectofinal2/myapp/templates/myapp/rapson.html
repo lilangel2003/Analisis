@@ -1,0 +1,82 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="fade-in">
+    <div class="container py-4">
+        <form method="post" class="mb-4">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">Calcular</button>
+            {% if user.is_authenticated %}
+                <a class="btn btn-outline-secondary ms-2">Ver Historial</a>
+            {% else %}
+                <p class="mt-3">Para ver más detalles, por favor <a href="{% url 'registro' %}" class="btn btn-link text-bg-primary">inicia sesión</a>.</p>
+            {% endif %}
+        </form>
+
+        {% if mensaje %}
+            <div class="alert alert-info mt-3" role="alert">
+                {{ mensaje }}
+            </div>
+        {% endif %}
+
+        {% if resultado_newton %}
+            <div class="mt-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Raíz aproximada</h5>
+                        <p class="card-text">{{ resultado_newton.0|default:"No calculada" }}</p>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Número de iteraciones</h5>
+                        <p class="card-text">{{ resultado_newton.1|default:"No calculado" }}</p>
+                    </div>
+                </div>
+
+                {% if user.is_authenticated %}
+                    <div class="mt-4">
+                        <h3>Iteraciones:</h3>
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            {% for iteracion in resultado_newton.2 %}
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Iteración {{ iteracion.0 }}</h5>
+                                        <p class="card-text">$$ f(x_n) = {{ iteracion.1 }} $$</p>
+                                        <p class="card-text">$$ f'(x_n) = {{ iteracion.2 }} $$</p>
+                                        <p class="card-text">$$ x_{n+1} = x_n - \frac{ f(x_n) }{ f'(x_n) } = {{ iteracion.3 }} $$</p>
+                                        <p class="card-text">Error = {{ iteracion.4 }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% if grafica_base64 %}
+                    <div class="mt-4">
+                        <h2>Gráfica:</h2>
+                        <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función y raíz encontrada" class="img-fluid mt-3">
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% block scripts %}
+    <!-- Asegúrate de incluir la biblioteca MathJax -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            MathJax.typeset();
+        });
+    </script>
+{% endblock %}
+{% endblock %}

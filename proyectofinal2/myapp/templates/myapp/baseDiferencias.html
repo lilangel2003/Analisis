@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Método de Bisección y Diferenciación Numérica{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-dark: #388E3C;
+            --bg-color: #E8F5E9;
+            --sidebar-bg: #2E7D32;
+            --footer-bg: #1B5E20;
+            --text-light: #ffffff;
+            --text-dark: #333;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            margin-top: 50px;
+        }
+
+        header {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            transition: border-bottom-color 0.3s ease-in-out;
+        }
+
+        header:hover {
+            border-bottom-color: var(--primary-dark);
+        }
+
+        hr {
+            border-top: 2px solid var(--primary-color);
+            margin: 20px 0;
+            transition: border-top-color 0.3s ease-in-out;
+        }
+
+        hr:hover {
+            border-top-color: var(--primary-dark);
+        }
+
+        .navbar-nav .nav-link {
+            transition: color 0.3s ease-in-out; 
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .btn {
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; 
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+        }
+
+        .container {
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            transition: color 0.3s ease-in-out;
+        }
+
+        h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+            color: var(--primary-dark);
+        }
+
+        footer {
+            background-color: var(--footer-bg);
+            color: var(--text-light);
+            padding: 1rem 0;
+        }
+
+        footer a {
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #A5D6A7;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+            color: var(--text-light);
+            font-size: 1.5rem;
+        }
+
+        .social-icons a:hover {
+            color: #A5D6A7;
+        }
+
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 1000;
+            transition: all 0.3s;
+            background-color: var(--sidebar-bg);
+        }
+
+        .sidebar.active {
+            margin-left: -250px;
+        }
+
+        .sidebar .sidebar-header {
+            background: var(--footer-bg);
+            color: var(--text-light);
+            padding: 1rem;
+        }
+
+        .sidebar .components {
+            padding: 1rem 0;
+        }
+
+        .sidebar .components li {
+            padding: 0.5rem 1rem;
+        }
+
+        .sidebar .components li a {
+            display: block;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .sidebar .components li a:hover {
+            background: var(--primary-dark);
+        }
+
+        #sidebarCollapse, #sidebarOpen {
+            border: none;
+            background: none;
+            color: var(--text-light);
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-header d-flex align-items-center justify-content-between p-3">
+            <div class="logo">
+                <img src="https://th.bing.com/th/id/OIG4.bQ4RdAHWUBg2lR6GKLPY?pid=ImgGn" alt="Logo" height="40">
+            </div>
+            <h3 class="mb-0">Menú</h3>
+            <button type="button" id="sidebarCollapse" class="btn btn-outline-light">
+                <i class="bi bi-list"></i>
+            </button>
+        </div>
+        <ul class="list-unstyled components p-2">
+            <li class="mb-2">
+                <a href="{% url 'principal' %}" class="text-light text-decoration-none">
+                    <i class="bi bi-house-door me-2"></i>Principal
+                </a>
+            </li>
+            <li class="mb-2">
+                <a href="{% url 'CalculadoraBase' %}" class="text-light text-decoration-none">
+                    <i class="bi bi-calculator me-2"></i>Calculadora
+                </a>
+            </li>
+            <li class="mb-2">
+                <a href="{% url 'teoriaB' %}" class="text-light text-decoration-none">
+                    <i class="bi bi-bar-chart me-2"></i>Método de Bisección
+                </a>
+            </li>
+            <li class="mb-2">
+                <a href="{% url 'Punto Fijo' %}" class="text-light text-decoration-none">
+                    <i class="bi bi-option me-2"></i>Método de Punto Fijo
+                </a>
+            </li>
+            <li class="mb-2">
+                <a href="{% url 'teoriaD' %}" class="text-light text-decoration-none">
+                    <i class="bi bi-graph-up-arrow me-2"></i>Diferenciación Numérica
+                </a>
+            </li>
+            <li class="mb-2">
+                <a href="{% url 'biblioteca' %}" class="text-light text-decoration-none">
+                    <i class="bi bi-book me-2"></i>Biblioteca
+                </a>
+            </li>
+            <li class="mb-2">
+                <a href="{% url 'creator' %}" class="text-light text-decoration-none">
+                    <i class="bi bi-people me-2"></i>Creadores
+                </a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="mb-2">
+                <a class="text-light text-decoration-none" href="{% url 'history' %}">
+                    <i class="bi bi-clock-history me-2"></i>Ver tu Historial
+                </a>
+            </li>
+            <h3 class="mb-0">Menú de Seción</h3><br>
+            <li class="mb-2">
+                <a href="{% url 'cerrar_sesion' %}" class="text-light text-decoration-none">
+                    <i class="bi bi-house-door me-2"></i>Salir
+                </a>
+            </li>
+            <li class="mb-2">
+                <a class="text-light text-decoration-none" href="{% url 'editar' %}">
+                    <i class="bi bi-pencil me-2"></i>Editar contraseña
+                </a>
+            </li>
+            <li class="mb-2">
+                <a class="text-light text-decoration-none" href="{% url 'perfil' %}">
+                    <i class="bi bi-person me-2"></i>Perfil
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <button type="button" id="sidebarOpen" class="btn btn-outline-light bg-dark" style="position: fixed; top: 10px; left: 10px;">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <div class="container py-4">
+        <header class="text-center mb-4">
+            <h1 style="color: var(--primary-color);">Métodos Numéricos</h1>
+        </header>
+        <hr class="my-4">
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+        <hr class="my-4">
+    </div>
+
+    <footer class="text-center text-lg-start bg-dark text-light mt-5">
+        <div class="container p-4">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <img src="https://itrsal.com/wp-content/uploads/2020/03/ues.png" alt="Universidad de El Salvador" class="img-fluid" style="max-width: 150px;">
+                </div>
+                <div class="col-lg-8 col-md-6 mb-4 mb-md-0 text-md-end">
+                    <p class="mb-1">Universidad de El Salvador</p>
+                    <p class="mb-1">Facultad Multidisciplinaria Oriental</p>
+                    <p class="mb-1">Departamento de Ingeniería y Arquitectura</p>
+                    <p class="mb-1">© 2024 Calculadora Metódica. Todos los derechos reservados.</p>
+                    <p class="mb-1">
+                        <a href="#" class="text-light">Ingeniería de Sistemas Informáticos</a> | 
+                        <a href="#" class="text-light">Análisis Numérico</a>
+                    </p>
+                    <div class="social-icons mt-3">
+                        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="text-light me-2"><i class="bi bi-facebook"></i></a>
+                        <a href="https://twitter.com" target="_blank" aria-label="Twitter" class="text-light me-2"><i class="bi bi-twitter"></i></a>
+                        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="text-light me-2"><i class="bi bi-instagram"></i></a>
+                        <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn" class="text-light me-2"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_scripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const sidebar = document.getElementById('sidebar');
+                const sidebarCollapse = document.getElementById('sidebarCollapse');
+                const sidebarOpen = document.getElementById('sidebarOpen');
+        
+                // Cargar el estado de visibilidad desde localStorage
+                const isSidebarActive = localStorage.getItem('sidebarActive') === 'true';
+        
+                if (isSidebarActive) {
+                    sidebar.classList.add('active');
+                }
+        
+                // Función para alternar la visibilidad y guardar el estado en localStorage
+                function toggleSidebar() {
+                    sidebar.classList.toggle('active');
+                    localStorage.setItem('sidebarActive', sidebar.classList.contains('active'));
+                }
+        
+                sidebarCollapse.addEventListener('click', toggleSidebar);
+                sidebarOpen.addEventListener('click', toggleSidebar);
+            });
+        </script>
+    {% endblock %}
+</body>
+</html>

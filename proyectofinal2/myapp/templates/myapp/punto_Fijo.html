@@ -1,0 +1,92 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}Método de Punto Fijo{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+        <h2 class="mb-4 text-center">Método de Punto Fijo</h2>
+        
+        <!-- Formulario de entrada -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Formulario de Cálculo</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Calcular</button>
+                </form>
+            </div>
+        </div>
+
+        {% if is_authenticated %}
+            {% if results %}
+            <div class="results mt-4">
+                <h3 class="mb-4 text-center">Resultados:</h3>
+                
+                <!-- Mostrar cada iteración en una tarjeta de Bootstrap -->
+                <div class="row">
+                    {% for iteration, substitution, x0, x1, error in results %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Iteración {{ iteration }}</h5>
+                                <p class="card-text">Sustitución:</p>
+                                <p class="card-text">
+                                    <!-- Usar delimitadores MathJax para LaTeX -->
+                                    <span class="math">\( {{ substitution|safe }} \)</span>
+                                </p>
+                                <p class="card-text"><strong>x0:</strong> {{ x0 }}</p>
+                                <p class="card-text"><strong>x1:</strong> {{ x1 }}</p>
+                                <p class="card-text"><strong>Error:</strong> {{ error }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-4">
+                    <h3 class="mb-2 text-center">Resultado Final:</h3>
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text"><strong>Resultado Final:</strong> {{ final_result }}</p>
+                            <p class="card-text"><strong>Número de Iteraciones:</strong> {{ iterations }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+            {% if final_result %}
+            <div class="mt-4">
+                <h3 class="mb-2 text-center">Resultado Final:</h3>
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text"><strong>Resultado Final:</strong> {{ final_result }}</p>
+                        <p class="card-text"><strong>Número de Iteraciones:</strong> {{ iterations }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endif %}
+
+        {% if error %}
+        <div class="alert alert-danger mt-4" role="alert">
+            {{ error }}
+        </div>
+        {% endif %}
+    </div>
+
+    {% block scripts %}
+    <!-- Asegúrate de incluir la biblioteca MathJax -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            MathJax.typeset();
+        });
+    </script>
+    {% endblock %}
+{% endblock %}

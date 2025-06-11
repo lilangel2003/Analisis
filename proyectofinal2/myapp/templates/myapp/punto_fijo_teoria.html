@@ -1,0 +1,40 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container mt-5 fade-in text-center">
+    <h1 class="display-4 mb-4 ">Teoría del Método de Punto Fijo</h1>
+
+    <div class="row mb-4">
+        <div class="col-lg-10 col-xl-8 mx-auto">
+            <div class="card shadow-lg border-light">
+                <div class="card-body">
+                    <div class="text-start">
+                        {{ teoria|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6 col-lg-4 mx-auto">
+            <a href="{% url 'Punto Fijo' %}" class="btn btn-success btn-lg w-100 mb-3">Calcular Método de Punto Fijo</a>
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="mt-4">
+        <a href="{% url 'biblioteca' %}" class="btn btn-info btn-lg">Biblioteca de Libros</a>
+    </div>
+    {% endif %}
+</div>
+
+    {% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            MathJax.typeset();
+        });
+    </script>
+    {% endblock %}
+{% endblock %}
